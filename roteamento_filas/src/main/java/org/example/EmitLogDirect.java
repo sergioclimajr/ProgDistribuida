@@ -13,14 +13,12 @@ public class EmitLogDirect {
         factory.setHost("localhost");
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
-            // Declara o exchange como "direct"
+
             channel.exchangeDeclare(EXCHANGE_NAME, "direct");
 
-            // Obtém a severidade e a mensagem dos argumentos
             String severity = getSeverity(argv);
             String message = getMessage(argv);
 
-            // Publica a mensagem no exchange com a severidade como routing key
             channel.basicPublish(EXCHANGE_NAME, severity, null, message.getBytes("UTF-8"));
             System.out.println(" [x] Sent '" + severity + "':'" + message + "'");
         }
